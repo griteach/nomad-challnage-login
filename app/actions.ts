@@ -3,15 +3,32 @@
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().email().toLowerCase(),
-  username: z.string(),
-  password: z
-    .string({
-      required_error: "Password is required",
-    })
-    .refine((password) => password === "12345", {
-      message: "Wrong password",
+  email: z
+    .string()
+    .email()
+    .toLowerCase()
+    .refine((email) => email.endsWith("@zod.com"), {
+      message: "Email must end with @zod.com",
     }),
+  username: z
+    .string()
+    .min(5, { message: "Username must be at least 5 characters long" }),
+  password: z
+    .string()
+    .min(10, { message: "Password must be at least 10 characters long" })
+    .refine(
+      (password) => {
+        for (const char of password) {
+          if (!isNaN(parseInt(char))) {
+            return true;
+          }
+        }
+        return false;
+      },
+      {
+        message: "Password must contain at least one number",
+      }
+    ),
 });
 
 export async function logInAction(_: any, formData: FormData) {

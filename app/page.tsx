@@ -3,7 +3,7 @@ import Input from "./input";
 import Button from "./button";
 import { useFormState } from "react-dom";
 import { logInAction } from "./actions";
-import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const [state, action] = useFormState(logInAction, null);
@@ -12,8 +12,20 @@ export default function Home() {
     <div className=" p-12 flex flex-col gap-10 items-center w-full ">
       <div className="text-5xl">🔥</div>
       <form action={action} className="flex flex-col gap-4 w-full">
-        <Input name="email" type="email" required placeholder="Email" />
-        <Input name="username" type="text" required placeholder="Username" />
+        <Input
+          name="email"
+          type="email"
+          required
+          placeholder="Email"
+          errors={state?.fieldErrors.email}
+        />
+        <Input
+          name="username"
+          type="text"
+          required
+          placeholder="Username"
+          errors={state?.fieldErrors.username}
+        />
         <Input
           name="password"
           type="password"
