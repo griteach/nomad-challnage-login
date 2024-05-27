@@ -1,6 +1,6 @@
 import { useFormStatus } from "react-dom";
 
-export default function Button() {
+export default function Button({ btnTitle }: { btnTitle: string }) {
   const { pending, data, action } = useFormStatus();
 
   return (
@@ -9,7 +9,7 @@ export default function Button() {
         disabled={pending}
         className="bg-gray-200 rounded-3xl w-full size-12 transition-all hover:bg-gray-300 active:scale-95"
       >
-        {pending ? "Loading..." : "Log in"}
+        {pending ? "Loading..." : btnTitle}
       </button>
     </div>
   );
