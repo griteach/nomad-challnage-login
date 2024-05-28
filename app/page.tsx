@@ -6,12 +6,15 @@ export default function Home() {
       <div className="text-9xl">🔥</div>
       <div className="flex gap-6">
         <Link
-          href={`/createAccount`}
+          href={`/create-account`}
           className="rounded-lg p-3 bg-orange-400 shadow-md"
         >
           Sign Up
         </Link>
-        <Link href={`/login`} className="rounded-lg p-3 bg-green-400 shadow-md">
+        <Link
+          href={`/log-in`}
+          className="rounded-lg p-3 bg-green-400 shadow-md"
+        >
           Sign In
         </Link>
       </div>
