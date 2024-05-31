@@ -25,6 +25,7 @@ model Tweet {
   updated_at DateTime @updatedAt
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
+  payload    String
   likes      Like[]
 }
 

@@ -56,7 +56,7 @@ export const login = async (_: any, formData: FormData) => {
 
     if (ok) {
       await loginSession(user?.id!);
-      redirect("/profile");
+      redirect("/");
     } else {
       return {
         //zod인척하고 반환값을 조드의 반환값처럼 만들어서 리턴

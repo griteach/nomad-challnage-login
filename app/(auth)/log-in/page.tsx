@@ -3,6 +3,7 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import { useFormState } from "react-dom";
 import { login } from "./actions";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [state, action] = useFormState(login, null);
@@ -28,6 +29,12 @@ export default function LoginPage() {
 
         <Button btnTitle="Login" />
       </form>
+      <Link
+        className="underline font-semibold text-blue-300"
+        href={`/create-account`}
+      >
+        Sign Up
+      </Link>
     </div>
   );
 }
