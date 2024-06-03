@@ -15,7 +15,8 @@ import {
   ArrowRightCircleIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import AddTweet from "./add-tweet";
 
 interface TweetsProps {
   initialTweets: InitialTweets;
@@ -48,11 +49,14 @@ export default function TweetsList({ initialTweets }: TweetsProps) {
     setIsFirstPage(false);
     setPage((prev) => prev + 1);
   };
+
   return (
     <div className=" p-12 flex flex-col gap-10 items-center w-full ">
       <div className="bg-blue-300 text-3xl w-full text-center py-3 font-bold rounded-2xl">
         GRITWEET
       </div>
+
+      <AddTweet />
 
       <div className="flex flex-col gap-5 w-full">
         {tweets.map((tweet, index) => (
