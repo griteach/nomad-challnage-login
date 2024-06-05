@@ -10,6 +10,7 @@ import LikeButton from "./like-button";
 import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 import getSession from "@/lib/session";
 import db from "@/lib/db";
+import Reply from "./reply";
 
 export default async function TweetDetail({
   params,
@@ -72,6 +73,7 @@ export default async function TweetDetail({
             </div>
           </div>
         </div>
+        <Reply />
       </div>
     </div>
   );
