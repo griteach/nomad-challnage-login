@@ -83,10 +83,11 @@ export default function TweetsList({ initialTweets }: TweetsProps) {
               </div>
               <div>{tweet.payload}</div>
               <div className="text-gray-500">{tweet.created_at.toString()}</div>
-              <div className="flex gap-4  mt-2 w-full">
+
+              {/* <div className="flex gap-4  mt-2 w-full">
                 <div className="flex gap-2">
                   <HeartIcon className="size-5" />
-                  {/* <div>{tweet._count.likes}</div> */}
+                  <div>{tweet._count.likes}</div>
                 </div>
                 <div className="flex">
                   <ChatBubbleLeftEllipsisIcon className="size-5" />
@@ -94,7 +95,7 @@ export default function TweetsList({ initialTweets }: TweetsProps) {
                 <div>
                   <ShareIcon className="size-5" />
                 </div>
-              </div>
+              </div> */}
             </div>
           </Link>
         ))}

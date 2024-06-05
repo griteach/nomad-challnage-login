@@ -1,12 +1,15 @@
-import { getTweet } from "@/app/tweets/[id]/actions";
+import { getLikeStatus, getTweet } from "@/app/tweets/[id]/actions";
 import {
   ArrowLeftCircleIcon,
   ChatBubbleLeftEllipsisIcon,
   CheckBadgeIcon,
-  HeartIcon,
   ShareIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import LikeButton from "./like-button";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
+import getSession from "@/lib/session";
+import db from "@/lib/db";
 
 export default async function TweetDetail({
   params,
@@ -18,6 +21,8 @@ export default async function TweetDetail({
   const id = Number(params.id);
 
   const tweet = await getTweet({ id });
+
+  const { likeCount, isLiked } = await getLikeStatus(id);
 
   return (
     <div className=" p-12 flex flex-col gap-10 items-center w-full ">
@@ -53,8 +58,11 @@ export default async function TweetDetail({
           <div className="text-gray-500">{tweet?.created_at.toString()}</div>
           <div className="flex gap-4  mt-2 w-full">
             <div className="flex gap-2">
-              <HeartIcon className="size-5" />
-              {/* <div>{tweet._count.likes}</div> */}
+              <LikeButton
+                isLiked={isLiked}
+                likeCount={likeCount}
+                tweetId={id}
+              />
             </div>
             <div className="flex">
               <ChatBubbleLeftEllipsisIcon className="size-5" />

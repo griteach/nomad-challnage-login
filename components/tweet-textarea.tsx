@@ -33,12 +33,19 @@ export default function Textarea({
       setCharCount(inputMessage.length);
     }
   };
+
   const [state, action] = useFormState(uploadTweet, null);
 
   const reset = () => {
     setMessage("");
     setCharCount(0);
   };
+
+  useEffect(() => {
+    if (state?.success) {
+      window.location.reload();
+    }
+  }, [state]);
   return (
     <form action={action} onSubmit={reset} className="h-full">
       <textarea
@@ -53,7 +60,9 @@ export default function Textarea({
         {...rest}
       />
       <div className="flex justify-end gap-4 items-center w-full mt-2">
-        <span className="text-red-500">{state?.fieldErrors.message}</span>
+        <span className="text-red-500">
+          {state?.success ? null : state?.msg.fieldErrors.message}
+        </span>
         <span>{charCount}/140</span>
         <PostButton btnTitle="Post" />
       </div>
