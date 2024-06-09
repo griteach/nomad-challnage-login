@@ -1,4 +1,4 @@
-import { getLikeStatus, getTweet } from "@/app/tweets/[id]/actions";
+import { getLikeStatus, getReply, getTweet } from "@/app/tweets/[id]/actions";
 import {
   ArrowLeftCircleIcon,
   ChatBubbleLeftEllipsisIcon,
@@ -7,10 +7,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import LikeButton from "./like-button";
-import { unstable_cache as nextCache, revalidateTag } from "next/cache";
-import getSession from "@/lib/session";
-import db from "@/lib/db";
 import Reply from "./reply";
+import { getUserInfo } from "@/lib/session";
 
 export default async function TweetDetail({
   params,
@@ -22,8 +20,9 @@ export default async function TweetDetail({
   const id = Number(params.id);
 
   const tweet = await getTweet({ id });
-
   const { likeCount, isLiked } = await getLikeStatus(id);
+  const reply = await getReply(id);
+  const user = await getUserInfo(id);
 
   return (
     <div className=" p-12 flex flex-col gap-10 items-center w-full ">
@@ -47,12 +46,12 @@ export default async function TweetDetail({
                   <CheckBadgeIcon className="size-5 text-blue-400" />
                 </span>
               </div>
-              <div className="flex gap-2 items-center">
+              {/* <div className="flex gap-2 items-center">
                 <span className="font-semibold">@dog_fats</span>
                 <span className="text-blue-400 font-semibold text-sm">
                   follow
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="w-full">{tweet?.payload}</div>
@@ -73,7 +72,7 @@ export default async function TweetDetail({
             </div>
           </div>
         </div>
-        <Reply />
+        <Reply initialReply={reply} user={user!} id={id} />
       </div>
     </div>
   );

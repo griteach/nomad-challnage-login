@@ -2,7 +2,13 @@
 
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { unstable_cache as nextCache, revalidateTag } from "next/cache";
+import { Prisma } from "@prisma/client";
+import {
+  unstable_cache as nextCache,
+  revalidatePath,
+  revalidateTag,
+} from "next/cache";
+import { z } from "zod";
 
 interface TweetProps {
   id: number;
@@ -74,6 +80,63 @@ export async function getLikeStatus(tweetId: number) {
     likeCount,
     isLiked: Boolean(isLiked),
   };
+}
+
+export async function getReply(tweetId: number) {
+  const reply = await db.response.findMany({
+    where: {
+      tweetId,
+    },
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
+  return reply;
+}
+
+export type InitialReply = Prisma.PromiseReturnType<typeof getReply>;
+
+const formSchema = z.object({
+  reply: z.string().min(1).max(70, {
+    message: "Too long",
+  }),
+  tweetId: z.string(),
+
+  // .min(PASSWORD_MIN_LENGTH),
+  // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+});
+
+export async function uploadReply(_: any, formData: FormData) {
+  const session = await getSession();
+  const data = {
+    reply: formData.get("reply"),
+    tweetId: formData.get("tweetId"),
+  };
+
+  const result = formSchema.safeParse(data);
+  if (result.success) {
+    const reply = await db.response.create({
+      data: {
+        payload: result.data.reply,
+        user: {
+          connect: {
+            id: session.id,
+          },
+        },
+        tweet: {
+          connect: {
+            id: Number(result.data.tweetId),
+          },
+        },
+      },
+    });
+
+    revalidatePath(`/tweets/${result.data.tweetId}`);
+  }
 }
 
 // export async function getCachedLikeStatus(tweetId: number) {

@@ -1,5 +1,6 @@
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
+import db from "./db";
 
 interface SessionContent {
   id?: number;
@@ -22,5 +23,17 @@ export async function getIsOwner(userId: number) {
     return session.id === userId; //세션 아이디와 물건의 유저 아이디가 같다면 true
   } else {
     return false; //아니면 당연히 false
+  }
+}
+
+export async function getUserInfo(userId: number) {
+  const session = await getSession();
+  const user = await db.user.findUnique({
+    where: {
+      id: session.id,
+    },
+  });
+  if (user) {
+    return user;
   }
 }

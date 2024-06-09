@@ -73,12 +73,12 @@ export default function TweetsList({ initialTweets }: TweetsProps) {
                       <CheckBadgeIcon className="size-5 text-blue-400" />
                     </span>
                   </div>
-                  <div className="flex gap-2 items-center">
+                  {/* <div className="flex gap-2 items-center">
                     <span className="font-semibold">@dog_fats</span>
                     <span className="text-blue-400 font-semibold text-sm">
                       follow
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div>{tweet.payload}</div>
